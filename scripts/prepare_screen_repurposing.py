@@ -1,22 +1,38 @@
 import pandas as pd
+import sys
 from pathlib import Path
 
-print("Loading the Drug Repurposing Hub dataset...")
+# Dynamically set paths based on the project structure
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+INPUT_FILE = PROJECT_ROOT / "data" / "raw" / "repo-sample-annotation-20240610.txt"
+OUTPUT_FILE = PROJECT_ROOT / "data" / "processed" / "screening_library.csv"
 
-# Load the file. 
-# sep='\t' handles the tab spacing.
-# comment='!' automatically skips the metadata at the top of the file.
-df = pd.read_csv("repo-sample-annotation-20240610.txt", sep='\t', comment='!', low_memory=False)
+def prepare_library(input_path, output_path):
+    print(f"Loading the Drug Repurposing Hub dataset from {input_path}...")
+    
+    if not input_path.exists():
+        print(f"Error: Could not find raw data at {input_path}")
+        sys.exit(1)
 
-# Select only the columns we need: SMILES (for the model) and the Drug Name/ID (for you)
-df_clean = df[['smiles', 'pert_iname', 'broad_id']].copy()
+    try:
+        # Load the file, handle tab spacing, and skip metadata
+        df = pd.read_csv(input_path, sep='\t', comment='!', low_memory=False)
+        
+        # Select required columns and drop missing SMILES
+        df_clean = df[['smiles', 'pert_iname', 'broad_id']].copy()
+        initial_len = len(df_clean)
+        df_clean = df_clean.dropna(subset=['smiles'])
+        
+        # Save to processed data folder
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        df_clean.to_csv(output_path, index=False)
+        
+        print(f"Dropped {initial_len - len(df_clean)} rows missing SMILES data.")
+        print(f"Successfully prepared {len(df_clean)} compounds!")
+        print(f"File saved to: {output_path}")
 
-# Drop any rows that are missing a SMILES string (Chemprop will crash without them)
-df_clean = df_clean.dropna(subset=['smiles'])
+    except Exception as e:
+        print(f"An error occurred while processing the data: {e}")
 
-# Save to a clean CSV file
-output_file = "screening_library.csv"
-df_clean.to_csv(output_file, index=False)
-
-print(f"Successfully prepared {len(df_clean)} compounds!")
-print(f"File saved as: {output_file}")
+if __name__ == "__main__":
+    prepare_library(INPUT_FILE, OUTPUT_FILE)
