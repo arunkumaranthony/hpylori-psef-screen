@@ -4,9 +4,9 @@ from pathlib import Path
 
 # Dynamically set paths to the 'results' folder
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DL_RESULTS_FILE = PROJECT_ROOT / "results" / "screening_results.csv"
+DL_RESULTS_FILE = PROJECT_ROOT / "results" / "screening_results_v4.csv"
 DOCKING_RESULTS_FILE = PROJECT_ROOT / "results" / "model_01_psef_protein_binding_energy.csv"
-OUTPUT_FILE = PROJECT_ROOT / "results" / "final_hit_list.csv"
+OUTPUT_FILE = PROJECT_ROOT / "results" / "v4_final_hit_list.csv"
 
 def merge_consensus(dl_file, docking_file, output_path):
     print("Merging Deep Learning predictions with Docking energies...")
