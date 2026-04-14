@@ -1,6 +1,4 @@
 #!/bin/bash
-# Fine-tunes the foundation model into a 10-model ensemble for H. pylori
-
 chemprop train \
   --data-path data/processed/fine_tune.csv \
   --task-type classification \
@@ -11,4 +9,4 @@ chemprop train \
   --save-dir models/finetune_model_v4 \
   --epochs 50 \
   --class-balance \
-  --ensemble-size 10
+  --num-replicates 10
