@@ -4,6 +4,5 @@ chemprop train \
   --task-type classification \
   --smiles-columns smiles \
   --target-columns activity \
-  --molecule-featurizers morgan_binary v1_rdkit_2d_normalized \
-  --save-dir models/pretrain_model_ext \
+  --save-dir models/pretrain_v6_base \
   --epochs 20
