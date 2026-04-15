@@ -4,5 +4,6 @@ chemprop train \
   --task-type classification \
   --smiles-columns smiles \
   --target-columns activity \
-  --save-dir models/pretrain_v6_base \
+  --molecule-featurizers v1_rdkit_2d_normalized \
+  --save-dir models/pretrain_v6_rdkit \
   --epochs 20

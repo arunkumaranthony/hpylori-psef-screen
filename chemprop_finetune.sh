@@ -4,8 +4,9 @@ chemprop train \
   --task-type classification \
   --smiles-columns smiles \
   --target-columns activity \
-  --checkpoint models/pretrain_v6_base/model_0/best.pt \
-  --save-dir models/finetune_v6_base_scaffold \
+  --molecule-featurizers v1_rdkit_2d_normalized \
+  --checkpoint models/pretrain_v6_rdkit/model_0/best.pt \
+  --save-dir models/finetune_v6_rdkit_scaffold \
   --epochs 50 \
   --class-balance \
   --split scaffold_balanced \
