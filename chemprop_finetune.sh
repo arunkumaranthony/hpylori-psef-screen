@@ -6,8 +6,8 @@ chemprop train \
   --target-columns activity \
   --molecule-featurizers v1_rdkit_2d_normalized \
   --checkpoint models/pretrain_v6_rdkit/model_0/best.pt \
-  --save-dir models/finetune_v6_rdkit_random \
+  --save-dir models/finetune_v6_rdkit_single \
   --epochs 50 \
   --class-balance \
-  --split random \
-  --num-replicates 10
+  --split scaffold_balanced \
+  --num-replicates 1
