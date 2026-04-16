@@ -22,8 +22,16 @@ def clean_and_deduplicate(input_path, output_path):
         # 1. Strip CXSMILES tags (keeping only the standard SMILES part)
         df['smiles'] = df['smiles'].astype(str).str.split().str[0]
 
-        # 2. Remove duplicates based on the SMILES column
+        # 2. Remove duplicates sequentially to ensure absolute uniqueness
+        # First, drop any duplicate chemical structures
         df_unique = df.drop_duplicates(subset=['smiles'], keep='first')
+        
+        # Second, drop any duplicate compound names/IDs
+        if 'pert_iname' in df_unique.columns:
+            df_unique = df_unique.drop_duplicates(subset=['pert_iname'], keep='first')
+        else:
+            print("Warning: 'pert_iname' column not found. Deduplicated by SMILES only.")
+            
         final_count = len(df_unique)
 
         # Save to the final screening file
