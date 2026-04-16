@@ -4,15 +4,20 @@ from pathlib import Path
 
 # Dynamically set paths to the 'results' folder
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DL_RESULTS_FILE = PROJECT_ROOT / "results" / "screening_results_v4.csv"
+# UPDATE 1: Point to the strictly filtered v6 AI candidates
+DL_RESULTS_FILE = PROJECT_ROOT / "results" / "v6_final_selected_compounds.csv"
 DOCKING_RESULTS_FILE = PROJECT_ROOT / "results" / "model_01_psef_protein_binding_energy.csv"
-OUTPUT_FILE = PROJECT_ROOT / "results" / "v4_final_hit_list.csv"
+# UPDATE 2: Update the output file name
+OUTPUT_FILE = PROJECT_ROOT / "results" / "v6_final_consensus_hits.csv"
 
 def merge_consensus(dl_file, docking_file, output_path):
-    print("Merging Deep Learning predictions with Docking energies...")
+    print("--- Merging v6 Elite AI Hits with Docking Energies ---")
 
-    if not dl_file.exists() or not docking_file.exists():
-        print("Error: Missing input files in the 'results' folder.")
+    if not dl_file.exists():
+        print(f"Error: Missing AI file at {dl_file}")
+        sys.exit(1)
+    if not docking_file.exists():
+        print(f"Error: Missing Docking file at {docking_file}")
         sys.exit(1)
 
     try:
@@ -32,16 +37,20 @@ def merge_consensus(dl_file, docking_file, output_path):
         if 'Ligand' in df_consensus.columns:
             df_consensus = df_consensus.drop(columns=['Ligand'])
 
-        # Sort the results
-        target_col = 'activity' if 'activity' in df_consensus.columns else df_consensus.columns[1]
-        df_consensus = df_consensus.sort_values(
-            by=[target_col, 'Binding Energy (kcal/mol)'], 
-            ascending=[False, True]
-        )
+        # Sort the results primarily by the strongest physical binding energy (lowest/most negative)
+        if 'Binding Energy (kcal/mol)' in df_consensus.columns:
+            df_consensus = df_consensus.sort_values(by='Binding Energy (kcal/mol)', ascending=True)
 
         df_consensus.to_csv(output_path, index=False)
-        print(f"Successfully merged {len(df_consensus)} compounds!")
-        print(f"Consensus hit list saved to: {output_path}")
+        print("\n" + "="*65)
+        print("             FINAL CONSENSUS CANDIDATES")
+        print("="*65)
+        print(f"Successfully matched {len(df_consensus)} elite AI compounds with Docking Data!")
+        print("="*65)
+        print(f"Consensus hit list saved to: {output_path}\n")
+
+        print("Top 5 Ultimate Candidates:")
+        print(df_consensus.head().to_string(index=False))
 
     except Exception as e:
         print(f"An error occurred during the merge: {e}")
