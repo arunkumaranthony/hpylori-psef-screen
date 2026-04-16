@@ -1,6 +1,7 @@
 #!/bin/bash
 chemprop predict \
-  -i data/processed/screening_library_final.csv \
-  --model-paths models/finetune_model_v5_scaffold/replicate_*/model_0/best.pt \
-  -o results/screening_results_v5.csv \
-  --molecule-featurizers morgan_binary v1_rdkit_2d_normalized
+  --test-path data/processed/screening_library_final.csv \
+  --model-path models/finetune_v6_rdkit_scaffold/replicate_*/model_0/best.pt \
+  --preds-path results/v6_screening_predictions.csv \
+  --smiles-columns smiles \
+  --molecule-featurizers v1_rdkit_2d_normalized
