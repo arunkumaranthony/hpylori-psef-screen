@@ -36,7 +36,7 @@ existing_cols = [c for c in columns_to_keep if c in df_final.columns]
 df_final = df_final[existing_cols]
 
 # Save the final selected compounds
-output_file = 'results/v6_final_selected_compounds.csv'
+output_file = 'results/v6_thresholded_compounds.csv'
 df_final.to_csv(output_file, index=False)
 
 print("\n" + "="*55)

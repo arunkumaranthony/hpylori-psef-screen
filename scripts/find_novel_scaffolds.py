@@ -38,7 +38,7 @@ print(f"Successfully generated fingerprints for {len(active_fps)} known active m
 # 2. Load the predicted screening results 
 # (Chemprop already kept pert_iname for us, so no need to merge!)
 print("\nLoading screening predictions...")
-df_preds = pd.read_csv('results/v6_screening_predictions.csv')
+df_preds = pd.read_csv('results/v6_repurposing_predictions.csv')
 
 # Ensure we sort by the highest predicted probability
 df_preds = df_preds.sort_values(by='activity', ascending=False).reset_index(drop=True)
@@ -66,7 +66,7 @@ df_top['nearest_neighbor_similarity'] = np.max(similarities, axis=1)
 df_novel = df_top[df_top['nearest_neighbor_similarity'] < 0.4]
 
 # Keep only the essential columns to make it clean
-columns_to_keep = ['smiles', 'pert_iname', 'broad_id', 'activity', 'nearest_neighbor_similarity']
+columns_to_keep = ['smiles', 'pert_iname', 'Sample', 'activity', 'nearest_neighbor_similarity']
 # Check if pert_iname exists, just to be extremely safe
 if 'pert_iname' in df_novel.columns:
     df_novel = df_novel[columns_to_keep]
