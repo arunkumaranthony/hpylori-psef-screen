@@ -27,12 +27,11 @@ experiments = {
     "Final model": "models/finetune_v6_rdkit_scaffold/replicate_*/model_0/test_predictions.csv"
 }
 
-# 3. Create the 2x2 Figure
-fig, axes = plt.subplots(2, 2, figsize=(18, 14))
-ax_roc = axes[0, 0]
-ax_prc = axes[0, 1]
-ax_cal = axes[1, 0]
-ax_bar = axes[1, 1]
+# 3. Create Separate Figures
+fig_roc, ax_roc = plt.subplots(figsize=(8, 6))
+fig_prc, ax_prc = plt.subplots(figsize=(8, 6))
+fig_cal, ax_cal = plt.subplots(figsize=(8, 6))
+fig_bar, ax_bar = plt.subplots(figsize=(10, 6))
 
 # Variables to store data for the Bar Chart and Calibration
 bar_labels = []
@@ -144,9 +143,23 @@ def autolabel(rects):
 autolabel(rects1)
 autolabel(rects2)
 
-# 5. Finalize and Save
-plt.tight_layout()
+# 5. Finalize and Save Separate Files
 os.makedirs('results', exist_ok=True)
-output_file = 'results/Figure_4_Validation_Plots.png'
-plt.savefig(output_file, dpi=300, bbox_inches='tight')
-print(f"\n Figure generation complete! Saved stunning 300 DPI image to: {output_file}")
+
+# Save Plot A
+fig_roc.tight_layout()
+fig_roc.savefig('results/Figure_4A_ROC.png', dpi=300, bbox_inches='tight')
+
+# Save Plot B
+fig_prc.tight_layout()
+fig_prc.savefig('results/Figure_4B_PRC.png', dpi=300, bbox_inches='tight')
+
+# Save Plot C
+fig_cal.tight_layout()
+fig_cal.savefig('results/Figure_4C_Calibration.png', dpi=300, bbox_inches='tight')
+
+# Save Plot D
+fig_bar.tight_layout()
+fig_bar.savefig('results/Figure_4D_Ablation_Bar.png', dpi=300, bbox_inches='tight')
+
+print("\n Figure generation complete! Saved 4 separate stunning 300 DPI images to the 'results' directory.")

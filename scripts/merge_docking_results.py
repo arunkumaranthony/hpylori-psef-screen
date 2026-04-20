@@ -5,10 +5,10 @@ from pathlib import Path
 # Dynamically set paths to the 'results' folder
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 # UPDATE 1: Point to the strictly filtered v6 AI candidates
-DL_RESULTS_FILE = PROJECT_ROOT / "results" / "v6_thresholded_compounds.csv"
+DL_RESULTS_FILE = PROJECT_ROOT / "results" / "v6_final_consensus_hits_clean.csv"
 DOCKING_RESULTS_FILE = PROJECT_ROOT / "data" / "processed" / "psef_docking_results.csv"
 # UPDATE 2: Update the output file name
-OUTPUT_FILE = PROJECT_ROOT / "results" / "v6_thresholded_compounds_docking_merged.csv"
+OUTPUT_FILE = PROJECT_ROOT / "results" / "v6_final_consensus_hits_docking_merged.csv"
 
 def merge_consensus(dl_file, docking_file, output_path):
     print("--- Merging v6 Elite AI Hits with Docking Energies ---")
